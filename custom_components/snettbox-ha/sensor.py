@@ -59,14 +59,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
         # Alle Schlüssel auf oberster Ebene von SBI, die KEIN dict sind
         top_level_keys = {k: v for k, v in sbi.items() if not isinstance(v, dict)}
         for key in top_level_keys:
-            entities.append(JsonHaSensor(hass, name, name, key, ip, update_interval, uid, version))
+            entities.append(SnettboxHaSensor(hass, name, name, key, ip, update_interval, uid, version))
 
         # Sensoren für verschachtelte Gruppen wie SB, GRID, INV
         for group in selected_groups:
             group_data = sbi.get(group, {})
             keys = flatten_keys(group_data, group)
             for key in keys:
-                entities.append(JsonHaSensor(hass, name, group, key, ip, update_interval, uid, version))
+                entities.append(SnettboxHaSensor(hass, name, group, key, ip, update_interval, uid, version))
 
     except Exception as e:
         _LOGGER.error(f"Fehler beim Abrufen der JSON-Daten: {e}")
