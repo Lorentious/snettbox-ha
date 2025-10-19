@@ -9,9 +9,13 @@ async def async_setup_entry(hass, entry):
         "ip": ip
     }
 
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
-    )
+# hass.async_create_task(
+#     hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
+# )
+# Korrekte Methode: await verwenden
+    await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
+
+# Wenn alles erfolgreich war, True zurückgeben
     return True
 
 async def async_unload_entry(hass, entry):
