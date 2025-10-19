@@ -1,6 +1,8 @@
 # Snettbox-HA
 >[!Important]
->Test im Aufbau
+>Grundlagen geschaffen.
+>Auslesen der (ersten) Hauptklammer funktioniert.
+>ToDo: Auslesen der untergeordneten Klammern
 
 ## License
 
