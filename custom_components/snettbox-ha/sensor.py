@@ -142,4 +142,5 @@ class SnettboxCoordinatorSensor(CoordinatorEntity, Entity):
             "manufacturer": "battery-direct",
             "model": "Snettbox",
             "sw_version": self._version,
+            "model_id": self._uid,
         }
