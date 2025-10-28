@@ -38,9 +38,7 @@ def get_value_from_path(data, path):
             return None
     return data
 
-# 
-
-'Neu:
+#Neu:
 async def async_setup_entry(hass, entry, async_add_entities):
     ip = entry.data["IP-Address"]
     name = entry.data["Name"]
