@@ -164,6 +164,17 @@ except Exception as e:
     _LOGGER.warning(f"Konnte icons.json nicht laden: {e}")
     ICON_MAP = {}
 
+def flatten_keys(d, parent_key=""):
+    """Rekursiv alle Keys aus dict holen, mit Punkt-Notation"""
+    items = []
+    for k, v in d.items():
+        new_key = f"{parent_key}.{k}" if parent_key else k
+        if isinstance(v, dict):
+            items.extend(flatten_keys(v, new_key))
+        else:
+            items.append(new_key)
+    return items
+
 def get_value_from_path(data, path):
     """Hole Wert anhand Pfad mit Punkt-Notation"""
     for part in path.split("."):
@@ -189,7 +200,7 @@ class SnettboxHaSensor(Entity):
         self._unsub_update = None
         self._update_interval = timedelta(seconds=update_interval)
 
-        # Friendly Name, z.B. "Temp (GroupA)" oder "UID (Device)"
+        # Friendly Name, z.B. "Temp (SB)" oder "UID (Device)"
         key_short = key[len(group)+1:] if key.startswith(group + ".") else key
         self._name = f"{key_short} ({group})"
 
@@ -242,12 +253,13 @@ class SnettboxHaSensor(Entity):
                 data = await resp.json()
 
             sbi = data.get("SBI", {})
-            self._state = get_value_from_path(sbi, self._key)
+            value = get_value_from_path(sbi, self._key)
+            self._state = value if value is not None else "unbekannt"
             self.async_write_ha_state()
 
         except Exception as e:
             _LOGGER.error(f"Fehler beim Abrufen der JSON-Daten für {self._key}: {e}")
-            self._state = None
+            self._state = "unbekannt"
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
@@ -273,7 +285,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         entities.append(SnettboxHaSensor(hass, name, "Device", "UID", ip, update_interval, uid, version))
         entities.append(SnettboxHaSensor(hass, name, "Device", "Ver", ip, update_interval, uid, version))
 
-        # Nur die vom Nutzer ausgewählten Keys
+        # Ausgewählte Keys
         for key in selected_groups:
             if key in ("UID", "Ver"):
                 continue
@@ -281,6 +293,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
             entities.append(SnettboxHaSensor(
                 hass, name, group, key, ip, update_interval, uid, version
             ))
+
+        # Alphabetisch nach Gruppe und Key sortieren
+        entities.sort(key=lambda e: (e._group, e._key))
 
     except Exception as e:
         _LOGGER.error(f"Fehler beim Abrufen der JSON-Daten: {e}")

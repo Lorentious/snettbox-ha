@@ -241,7 +241,7 @@ class SnettboxHaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         #     vol.Optional(group): bool for group in self.available_groups
         # })
         schema = vol.Schema({
-        vol.Optional(group, default=False): bool for group in self.available_groups
+        vol.Optional(group, default=True): bool for group in self.available_groups
         })
 
 
