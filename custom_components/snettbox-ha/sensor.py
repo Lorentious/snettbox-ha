@@ -148,7 +148,7 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.event import async_track_time_interval
 from datetime import timedelta
-from .const import DOMAIN
+from .const import DOMAIN, DEFAULT_URL
 import logging
 import json
 import os
@@ -247,12 +247,18 @@ class SnettboxHaSensor(Entity):
 
     async def async_update(self, now=None):
         session = async_get_clientsession(self._hass)
-        url = f"http://{self._ip}/"
+        url = DEFAULT_URL.format(ip=self._ip)
         try:
             async with session.get(url, timeout=5, ssl=False) as resp:
                 data = await resp.json()
 
             sbi = data.get("SBI", {})
+            if not sbi:
+                _LOGGER.debug("async_update: keine 'SBI' Daten von %s (%s)", self._ip, url)
+                self._state = "unbekannt"
+                self.async_write_ha_state()
+                return
+
             value = get_value_from_path(sbi, self._key)
             self._state = value if value is not None else "unbekannt"
             self.async_write_ha_state()
@@ -272,12 +278,16 @@ async def async_setup_entry(hass, entry, async_add_entities):
     entities = []
     session = async_get_clientsession(hass)
 
-    url = f"http://{ip}/"
+    url = DEFAULT_URL.format(ip=ip)
     try:
         async with session.get(url, timeout=5, ssl=False) as resp:
             data = await resp.json()
 
         sbi = data.get("SBI", {})
+        if not sbi:
+            _LOGGER.warning("Keine 'SBI' Daten in Antwort von %s gefunden (evtl. falscher Pfad). URL: %s", ip, url)
+            async_add_entities(entities, True)
+            return
         uid = sbi.get("UID", "unknown")
         version = sbi.get("Ver", "unknown")
 
@@ -295,7 +305,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
             ))
 
         # Alphabetisch nach Gruppe und Key sortieren
-        entities.sort(key=lambda e: (e._key, e._group))
+        entities.sort(key=lambda e: (e._group, e._key))
 
     except Exception as e:
         _LOGGER.error(f"Fehler beim Abrufen der JSON-Daten: {e}")
