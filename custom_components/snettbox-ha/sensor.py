@@ -189,7 +189,7 @@ class SnettboxHaSensor(Entity):
         self._unsub_update = None
         self._update_interval = timedelta(seconds=update_interval)
 
-        # Friendly Name erstellen, z.B. "Temp (GroupA)"
+        # Friendly Name, z.B. "Temp (GroupA)" oder "UID (Device)"
         key_short = key[len(group)+1:] if key.startswith(group + ".") else key
         self._name = f"{key_short} ({group})"
 
@@ -269,6 +269,11 @@ async def async_setup_entry(hass, entry, async_add_entities):
         uid = sbi.get("UID", "unknown")
         version = sbi.get("Ver", "unknown")
 
+        # UID und Ver als eigene Sensoren
+        entities.append(SnettboxHaSensor(hass, name, "Device", "UID", ip, update_interval, uid, version))
+        entities.append(SnettboxHaSensor(hass, name, "Device", "Ver", ip, update_interval, uid, version))
+
+        # Nur die vom Nutzer ausgewählten Keys
         for key in selected_groups:
             if key in ("UID", "Ver"):
                 continue
