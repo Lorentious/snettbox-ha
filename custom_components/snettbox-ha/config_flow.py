@@ -151,19 +151,19 @@ class SnettboxHaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self.ip = None
         self.name = None
         self.available_groups = []
-        self.update_interval = 15
+        self.update_interval = 7
 
     async def async_step_user(self, user_input=None):
         USER_SCHEMA = vol.Schema({
             vol.Required("IP-Address"): str,
             vol.Required("Name"): str,
-            vol.Required("Interval", default=15): int,
+            vol.Required("Interval", default=7): int,
         })
 
         if user_input is not None:
             self.ip = user_input["IP-Address"]
             self.name = user_input["Name"]
-            self.update_interval = user_input.get("Interval", 15)
+            self.update_interval = user_input.get("Interval", 7)
             session = async_get_clientsession(self.hass)
 
             # URL aufbauen und prüfen
