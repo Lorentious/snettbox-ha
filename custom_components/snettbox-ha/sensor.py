@@ -295,7 +295,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
             ))
 
         # Alphabetisch nach Gruppe und Key sortieren
-        entities.sort(key=lambda e: (e._group, e._key))
+        entities.sort(key=lambda e: (e._key, e._group))
 
     except Exception as e:
         _LOGGER.error(f"Fehler beim Abrufen der JSON-Daten: {e}")
