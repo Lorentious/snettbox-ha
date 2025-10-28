@@ -49,7 +49,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     url = f"http://{ip}/"
     try:
-        async with session.get(url, timeout=5) as resp:
+        # Einige Geräte verwenden selbstsignierte Zertifikate oder HTTP;
+        # wir setzen ssl=False, damit kein SSL/TLS-Zertifikat geprüft wird.
+        async with session.get(url, timeout=5, ssl=False) as resp:
             data = await resp.json()
 
         sbi = data.get("SBI", {})
@@ -135,8 +137,10 @@ class SnettboxHaSensor(Entity):
         url = f"http://{self._ip}/"
         session = async_get_clientsession(self._hass)
         try:
-            async with session.get(url, timeout=5) as resp:
+            # Deaktiviere SSL-Prüfung für Geräte mit fehlerhafter/fehlender TLS-Konfiguration
+            async with session.get(url, timeout=5, ssl=False) as resp:
                 data = await resp.json()
+
             sbi = data.get("SBI", {})
             self._state = get_value_from_path(sbi, self._key)
             self.async_write_ha_state()
