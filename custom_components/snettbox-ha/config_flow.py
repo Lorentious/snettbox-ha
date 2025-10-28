@@ -103,8 +103,12 @@ class SnettboxHaConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         #})
 
         schema = vol.Schema({
-            vol.Optional(group, description={"suggested_value": group.replace(".", " → ")}): bool
-            for group in self.available_groups
+            vol.Optional(
+            group,
+            default=False,
+            description={"suggested_value": group.replace(".", " → ")}
+        ): bool
+        for group in self.available_groups
         })
 
         #Anzeige des Auswahlformulars für die Gruppen
