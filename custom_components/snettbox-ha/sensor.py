@@ -38,6 +38,9 @@ def get_value_from_path(data, path):
             return None
     return data
 
+# 
+
+'Neu:
 async def async_setup_entry(hass, entry, async_add_entities):
     ip = entry.data["IP-Address"]
     name = entry.data["Name"]
@@ -49,8 +52,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     url = f"http://{ip}/"
     try:
-        # Einige Geräte verwenden selbstsignierte Zertifikate oder HTTP;
-        # wir setzen ssl=False, damit kein SSL/TLS-Zertifikat geprüft wird.
         async with session.get(url, timeout=5, ssl=False) as resp:
             data = await resp.json()
 
@@ -58,22 +59,18 @@ async def async_setup_entry(hass, entry, async_add_entities):
         uid = sbi.get("UID", "unknown")
         version = sbi.get("Ver", "unknown")
 
-        # Alle Schlüssel auf oberster Ebene von SBI, die KEIN dict sind
-        top_level_keys = {k: v for k, v in sbi.items() if not isinstance(v, dict)}
-        for key in top_level_keys:
-            entities.append(SnettboxHaSensor(hass, name, name, key, ip, update_interval, uid, version))
-
-        # Sensoren für verschachtelte Gruppen wie SB, GRID, INV
-        for group in selected_groups:
-            group_data = sbi.get(group, {})
-            keys = flatten_keys(group_data, group)
-            for key in keys:
-                entities.append(SnettboxHaSensor(hass, name, group, key, ip, update_interval, uid, version))
+        # Nur die ausgewählten Keys verwenden
+        for key in selected_groups:
+            if key in ("UID", "Ver"):
+                continue
+            group = key.split(".")[0]
+            entities.append(SnettboxHaSensor(hass, name, group, key, ip, update_interval, uid, version))
 
     except Exception as e:
         _LOGGER.error(f"Fehler beim Abrufen der JSON-Daten: {e}")
 
     async_add_entities(entities, True)
+
 
 
 class SnettboxHaSensor(Entity):
