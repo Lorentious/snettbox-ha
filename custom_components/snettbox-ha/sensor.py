@@ -202,7 +202,8 @@ class SnettboxHaSensor(Entity):
 
         # Friendly Name, z.B. "Temp (SB)" oder "UID (Device)"
         key_short = key[len(group)+1:] if key.startswith(group + ".") else key
-        self._name = f"{key_short} ({group})"
+       #self._name = f"{key_short} ({group})"
+        self._name = f"{group}:{key_short}"
 
     @property
     def name(self):
