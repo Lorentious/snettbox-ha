@@ -1,7 +1,7 @@
 {
   "domain": "snettbox-ha",
   "name": "Snettbox-HA",
-  "version": "v0.3",
+  "version": "v04.00",
   "documentation": "https://github.com/lorentious/snettbox-ha",
   "config_flow": true,
   "requirements": [],
