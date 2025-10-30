@@ -46,19 +46,12 @@ https://github.com/Lorentious/snettbox-ha
 
 
 ## 📊 Nutzung
-Nach der Einrichtung werden automatisch Sensor-Entitäten angelegt – z. B.:
-
-| Entität | Beschreibung |
-|--------|--------------|
-| `sensor.snettbox_grid_power` | Netzbezug / Einspeisung |
-| `sensor.snettbox_battery_soc` | Batterieladestand |
-| … | abhängig vom JSON-Feld der Snettbox |
-
+Nach der Einrichtung werden automatisch Sensor-Entitäten angelegt
 Diese Sensoren können direkt in **Dashboards**, Automationen, Statistiken oder Grafiken verwendet werden.
 
 
 ## 🤝 Entwicklung
-Das Projekt wurde gemeinsam (Vater + Sohn) entwickelt – Verbesserungen und Ideen sind willkommen!  
+Das Projekt wurde gemeinsam (Vater + Sohn) entwickelt für [Snettbox](https://www.snettbox.de/) – Verbesserungen und Ideen sind willkommen!  
 Pull-Requests & Issues gerne über GitHub.
 
 ## 📄 Lizenz
