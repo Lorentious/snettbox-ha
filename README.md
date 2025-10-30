@@ -46,12 +46,12 @@ https://github.com/Lorentious/snettbox-ha
 
 
 ## 📊 Nutzung
-Nach der Einrichtung werden automatisch Sensor-Entitäten angelegt.
+Nach der Einrichtung werden automatisch Sensor-Entitäten angelegt.  
 Diese Sensoren können direkt in **Dashboards**, Automationen, Statistiken oder Grafiken verwendet werden.
 
 
 ## 🤝 Entwicklung
-Das Projekt wurde gemeinsam (Vater + Sohn) entwickelt für [Snettbox](https://www.snettbox.de/) – Verbesserungen und Ideen sind willkommen!  
+Das Projekt wurde entwickelt für [Snettbox](https://www.snettbox.de/) – Verbesserungen und Ideen sind willkommen!  
 Pull-Requests & Issues gerne über GitHub.
 
 ## 📄 Lizenz
