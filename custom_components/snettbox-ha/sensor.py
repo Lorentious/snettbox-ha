@@ -104,12 +104,7 @@ class SnettboxCoordinatorSensor(CoordinatorEntity, Entity):
         self._uid = uid
         self._version = version
 
-        # Friendly Name: Gruppe:Schlüssel
-        #key_short = key[len(group)+1:] if key.startswith(group + ".") else key
-        #self._name = f"{group}:{key_short}"
-        #ersetzt durch:
         key_short = self._key[len(self._group)+1:] if self._key.startswith(self._group + ".") else self._key
-        # Friendly Name: Gruppe:Schlüssel, nur Schlüssel wenn gleich
         self._name = key_short if key_short == self._group else f"{self._group}:{key_short}"
 
 
@@ -144,3 +139,11 @@ class SnettboxCoordinatorSensor(CoordinatorEntity, Entity):
             "sw_version": self._version,
             "serial_number": self._uid,
         }
+
+    @property
+    def entity_category(self):
+        """Return the entity category."""
+        diagnostic_entities = ["Device:UID", "Device:Ver", "Err", "Lwip", "Mbed", "t"]
+        if self._name in diagnostic_entities:
+            return "diagnostic"
+        return None
