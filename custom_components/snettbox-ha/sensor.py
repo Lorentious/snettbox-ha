@@ -1,5 +1,5 @@
 #mit DataUpdateCoordinator
-from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.entity import Entity, EntityCategory
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, CoordinatorEntity
 from datetime import timedelta
@@ -143,7 +143,8 @@ class SnettboxCoordinatorSensor(CoordinatorEntity, Entity):
     @property
     def entity_category(self):
         """Return the entity category."""
-        diagnostic_entities = ["Device:UID", "Device:Ver", "Err", "Lwip", "Mbed", "t"]
-        if self._name in diagnostic_entities:
-            return "diagnostic"
+        diagnostic_entities = ["Device:UID", "Device:VER", "Device.Err", "Device.Lwip", "Device.Mbed", "Device.t"]
+        _LOGGER.debug(f"Checking entity category for: {self._key} (name: {self._name})")
+        if self._key in diagnostic_entities:
+            return EntityCategory.DIAGNOSTIC
         return None
