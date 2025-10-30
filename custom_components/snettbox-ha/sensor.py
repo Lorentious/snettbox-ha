@@ -144,6 +144,13 @@ class SnettboxCoordinatorSensor(CoordinatorEntity, Entity):
     def entity_category(self):
         """Return the entity category."""
         diagnostic_keys = ["UID", "Ver", "Err", "t", "Lwip", "Mbed"]
-        if any(self._key.endswith(key) for key in diagnostic_keys):
+        
+        # Debug logging
+        _LOGGER.debug(f"Checking: name={self._name}, key={self._key}")
+        
+        # Prüfe ob der Key direkt in der Liste ist
+        if self._key in diagnostic_keys:
+            _LOGGER.debug(f"Setting diagnostic for: {self._key}")
             return EntityCategory.DIAGNOSTIC
+            
         return None
