@@ -47,7 +47,6 @@ https://github.com/Lorentious/snettbox-ha
 
 ## 📊 Nutzung
 Nach der Einrichtung werden automatisch Sensor-Entitäten angelegt.
-
 Diese Sensoren können direkt in **Dashboards**, Automationen, Statistiken oder Grafiken verwendet werden.
 
 
