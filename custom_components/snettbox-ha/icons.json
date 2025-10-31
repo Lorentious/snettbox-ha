@@ -13,9 +13,9 @@
     "SB.SoC": "mdi:battery-high",
     "SB.SoH": "mdi:battery-heart-outline",
     "SB.T": "mdi:thermometer",
-    "SB.Ich": "mdi:help",
-    "SB.Idch": "mdi:help",
-    "SB.Uout": "mdi:help",
+    "SB.Ich": "mdi:lightning-bolt",
+    "SB.Idch": "mdi:lightning-bolt",
+    "SB.Uout": "mdi:lightning-bolt",
     "SI.Err": "mdi:alert-circle-outline",
     "SI.Sta": "mdi:list-status",
     "SI.Udc": "mdi:help",
@@ -30,4 +30,5 @@
     "GRID.PL1": "mdi:help",
     "GRID.PL2": "mdi:help",
     "GRID.PL3": "mdi:help"
+
 }
