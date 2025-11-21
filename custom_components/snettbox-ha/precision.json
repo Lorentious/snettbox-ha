@@ -1,0 +1,19 @@
+{
+    "SB.U": 2,
+    "SB.I": 2,
+    "SB.SoC": 0,
+    "SB.SoH": 0,
+    "SB.T": 0,
+    "SB.Ich": 2,
+    "SB.Idch": 2,
+    "SB.Uout": 2,
+    "SI.Udc": 2,
+    "SI.Pac": 0,
+    "SI.Uac": 0,
+    "SI.f": 3,
+    "GRID.f": 3,
+    "GRID.Pg": 0,
+    "GRID.PL1": 1,
+    "GRID.PL2": 1,
+    "GRID.PL3": 1
+}

@@ -10,6 +10,34 @@ import os
 
 _LOGGER = logging.getLogger(__name__)
 
+# Scale of Measurement laden
+SCALE_PATH = os.path.join(os.path.dirname(__file__), "scale.json")
+try:
+    with open(SCALE_PATH, "r", encoding="utf-8") as f:
+        SCALE_MAP = json.load(f)
+except Exception as e:
+    _LOGGER.warning(f"Konnte scale.json nicht laden: {e}")
+    SCALE_MAP = {}
+
+
+# Units of Measurement laden
+UNITS_PATH = os.path.join(os.path.dirname(__file__), "units.json")
+try:
+    with open(UNITS_PATH, "r", encoding="utf-8") as f:
+        UNITS_MAP = json.load(f)
+except Exception as e:
+    _LOGGER.warning(f"Konnte units.json nicht laden: {e}")
+    UNITS_MAP = {}
+
+# Anzeige­genauigkeit laden
+PRECISION_PATH = os.path.join(os.path.dirname(__file__), "precision.json")
+try:
+    with open(PRECISION_PATH, "r", encoding="utf-8") as f:
+        PRECISION_MAP = json.load(f)
+except Exception as e:
+    _LOGGER.warning(f"Konnte precision.json nicht laden: {e}")
+    PRECISION_MAP = {}
+
 # Icons laden
 ICON_PATH = os.path.join(os.path.dirname(__file__), "icons.json")
 try:
@@ -115,7 +143,28 @@ class SnettboxCoordinatorSensor(CoordinatorEntity, Entity):
     @property
     def state(self):
         value = get_value_from_path(self.coordinator.data, self._key)
-        return value if value is not None else "unbekannt"
+
+        if value is None:
+            return None
+
+        # Skalierung anwenden (scale.json)
+        scale = SCALE_MAP.get(self._key)
+        if scale:
+            try:
+                value = value / scale
+            except Exception:
+                pass
+
+        # Präzision anwenden (precision.json)
+        precision = PRECISION_MAP.get(self._key)
+        if precision is not None and isinstance(value, (int, float)):
+            try:
+                value = round(value, precision)
+            except Exception:
+                pass
+
+        return value
+
 
     @property
     def unique_id(self):
@@ -128,6 +177,11 @@ class SnettboxCoordinatorSensor(CoordinatorEntity, Entity):
     @property
     def icon(self):
         return ICON_MAP.get(self._key)
+    
+    @property
+    def unit_of_measurement(self):
+        return UNITS_MAP.get(self._key)
+
 
     @property
     def device_info(self):

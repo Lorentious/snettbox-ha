@@ -1,0 +1,19 @@
+{
+    "SB.U": 1000,
+    "SB.I": 1000,
+    "SB.SoC": 1,
+    "SB.SoH": 1,
+    "SB.T": 1,
+    "SB.Ich": 1000,
+    "SB.Idch": 1000,
+    "SB.Uout": 1000,
+    "SI.Udc": 10,
+    "SI.Pac": 1,
+    "SI.Uac": 1,
+    "SI.f": 100,
+    "GRID.f": 100,
+    "GRID.Pg": 1,
+    "GRID.PL1": 100,
+    "GRID.PL2": 100,
+    "GRID.PL3": 100
+}
