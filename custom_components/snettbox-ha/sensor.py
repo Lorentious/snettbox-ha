@@ -168,7 +168,7 @@ class SnettboxCoordinatorSensor(CoordinatorEntity, Entity):
 
     @property
     def unique_id(self):
-        return f"{self._ip}_{self._group}_{self._key}"
+        return f"{self._base_name}_{self._ip}_{self._group}_{self._key}"
 
     @property
     def should_poll(self):
